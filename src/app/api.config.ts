@@ -12,4 +12,7 @@ export class ApiConfig {
 
   serviceName_REGISTRATION = 'user/register';
   serviceName_LOGIN = 'user/login';
+  serviceName_REFRESH_TOKEN = 'user/refresh-token';
+  serviceName_LOGOUT = 'user/logout';
+  serviceName_GETUSERS = 'user/getUsers';
 }

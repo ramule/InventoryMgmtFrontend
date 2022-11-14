@@ -1,1 +1,4 @@
-<p>dashboard works!</p>
+<button (click)="getUsersApiCall()">Get Users</button>
+<button (click)="logout()">Logout</button>
+
+<p *ngFor="let item of usersArr">{{item.name}}</p>

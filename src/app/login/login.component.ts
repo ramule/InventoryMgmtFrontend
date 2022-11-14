@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -53,9 +54,15 @@ export class LoginComponent implements OnInit {
 
   loginAPICall() {
     let params = this.loginService.loginRequest(this.loginForm.value);
-    let loginObservable = this.httpService.post<Response>(this.apiConfig.serviceName_LOGIN, params);
+    let loginObservable = this.httpService.post<HttpResponse<any>>(this.apiConfig.serviceName_LOGIN, params);
     loginObservable.subscribe((data) => {
-      console.log(data);
+      console.log(data.headers.get('X-Token'));
+      let token: any = data.headers.get('X-Token');
+      sessionStorage.setItem('X-Token', token);
+
+      const refreshToken: any = data.headers.get('refresh-Token');
+      sessionStorage.setItem('refreshToken', refreshToken);
+      console.log("token cookie: ", document.cookie);
       this.router.navigateByUrl('/dashboard');
     });
   }

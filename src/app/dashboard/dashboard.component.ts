@@ -1,6 +1,8 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import {CookieService} from 'ngx-cookie-service';
-
+import { ApiConfig } from '../api.config';
+import { HttpService } from '../services/common-services/http-api.service';
+import { DashboardService } from './dashboard.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -8,13 +10,30 @@ import {CookieService} from 'ngx-cookie-service';
 })
 export class DashboardComponent implements OnInit {
 
-  cookie: any;
-  constructor(private cookieService:CookieService) { }
+  usersArr: any = [];
+  constructor(private httpService: HttpService, public apiConfig: ApiConfig, private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
-    this.cookie = this.cookieService.get('jwt');
-    console.log(this.cookie);
+    this.getUsersApiCall();
   }
 
+  getUsersApiCall() {
+    let loginObservable = this.httpService.get<HttpResponse<any>>(this.apiConfig.serviceName_GETUSERS);
+    loginObservable.subscribe((response: any) => {
+      console.log(response.responseData);
+      let tempArr = JSON.parse(response.responseData);
+      this.usersArr = tempArr.usersData;
+
+    });
+  }
+
+  logout() {
+    // let params = this.dashboardService.logoutRequest(this.loginForm.value);
+    // let loginObservable = this.httpService.post<HttpResponse<any>>(this.apiConfig.serviceName_LOGIN, params);
+    // loginObservable.subscribe((data) => {
+
+    //   this.router.navigateByUrl('/dashboard');
+    // });
+  }
 
 }
