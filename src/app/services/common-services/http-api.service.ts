@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { ApiConfig } from 'src/app/api.config';
 @Injectable({
   'providedIn':'root'
@@ -32,7 +32,7 @@ export class HttpService {
         // 'Authorization': this.getToken(this.getTokenDetails())
     });
 
-    const httpPost = this.http.post(this.commonURL + apiUrl, body, { headers: headers })
+    const httpPost = this.http.post(this.commonURL + apiUrl, body, { observe: "response" })
       .pipe(
           catchError(this.errorHandler.bind(this))
       );
